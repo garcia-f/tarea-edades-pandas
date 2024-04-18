@@ -1,28 +1,31 @@
 import pandas as pd
 
-# leer un csv
-data_frame = pd.read_csv("frecuencia_absoluta.csv", delimiter=",")
+def analisis_estadistico(nombre_archivo):
+    # Leer el archivo CSV
+    data_frame = pd.read_csv(nombre_archivo, delimiter=",")
 
-# mostrar por consola la informacion de la data frame, en forma de tabla
+    # Calcular la frecuencia acumulada (Fi)
+    data_frame["Fi"] = data_frame["fi"].cumsum()
 
-# para acceder a una columna especifica
-# print(data_frame["fi"])
+    # Calcular la frecuencia relativa (ri)
+    data_frame["ri"] = data_frame["fi"] / data_frame["fi"].sum()
 
-# crear y agregar el Fi en una nueva columna
-data_frame["Fi"] = data_frame["fi"].cumsum()
+    # Calcular la frecuencia relativa acumulada (Ri)
+    data_frame["Ri"] = data_frame["ri"].cumsum()
 
-# crear y agregar ri en una nueva columna
-data_frame["ri"] = data_frame["fi"] / data_frame["fi"].sum()
+    # Calcular la probabilidad (pi%)
+    data_frame['pi%'] = data_frame["ri"] * 100
 
-# crear y agregar Ri en una nueva columna
-data_frame["Ri"] = data_frame["ri"].cumsum()
+    # Calcular la probabilidad acumulada (Pi%)
+    data_frame["Pi%"] = data_frame["Ri"] * 100
 
-# crear y agregar pi% en una nueva columna
-data_frame['pi%'] = data_frame["ri"] * 100
+    # Retornar el DataFrame resultante
+    return data_frame
 
-# crear y agregar Pi% en una nueva columna
-data_frame["Pi%"] = data_frame["Ri"] * 100
 
-print(data_frame)
+resultado_analisis = analisis_estadistico("frecuencia_absoluta.csv")
+print(resultado_analisis)
 
-data_frame.to_clipboard(index=False, decimal=',')
+# Copiar el DataFrame al portapapeles
+resultado_analisis.to_clipboard(index=False, decimal=',')
+
